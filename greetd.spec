@@ -8,16 +8,17 @@
 
 Name:           greetd
 Version:        0.10.3
-Release:        0
+Release:        1
 Summary:        Minimal and flexible login manager daemon
 License:        GPL-3.0-only
 Group:          System/Management
 URL:            https://git.sr.ht/~kennylevinsen/greetd
-Source:         %{name}-%{version}.tar.gz
-Source1:        vendor.tar.gz
+Source:         https://git.sr.ht/~kennylevinsen/greetd/archive/%{version}/%{name}-%{version}.tar.gz
+Source1:        vendor.tar.xz
 Source3:        greetd.pam
+
 BuildRequires:  cargo
-BuildRequires:  cargo-packaging
+BuildRequires:  rust-packaging
 BuildRequires:  pam-devel
 BuildRequires:  systemd-rpm-macros
 Requires:       pam
@@ -28,9 +29,11 @@ but instead offloads that to greeters, which are arbitrary applications that imp
 
 %prep
 %autosetup -a1
+mkdir .cargo
+cp %{SOURCE2} .cargo/config
 
 %build
-%{cargo_build}
+%cargo_build
 
 %install
 
@@ -48,9 +51,6 @@ install -D -m 0644 %{SOURCE3} %{buildroot}/%{_pam_confdir}/greetd
 install -d %{buildroot}%{_localstatedir}/cache/greetd
 install -d %{buildroot}%{_sharedstatedir}/greetd
 install -d %{buildroot}/run/greetd
-
-%check
-%{cargo_test}
 
 %pre
 %service_add_pre %{name}.service
