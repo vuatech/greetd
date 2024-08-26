@@ -30,8 +30,9 @@ but instead offloads that to greeters, which are arbitrary applications that imp
 
 %prep
 %autosetup -a1
-mkdir .cargo
-cp %{SOURCE2} .cargo/config
+%cargo_prep -v vendor
+#mkdir .cargo
+#cp %{SOURCE2} .cargo/config
 
 %build
 %cargo_build
