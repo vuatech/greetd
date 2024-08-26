@@ -17,6 +17,7 @@ Source:         https://git.sr.ht/~kennylevinsen/greetd/archive/%{version}/%{nam
 Source1:        vendor.tar.xz
 Source2:        cargo_config
 Source3:        greetd.pam
+Source4:        %{name}.sysusers
 
 BuildRequires:  cargo
 BuildRequires:  rust-packaging
@@ -54,6 +55,8 @@ install -d %{buildroot}%{_localstatedir}/cache/greetd
 install -d %{buildroot}%{_sharedstatedir}/greetd
 install -d %{buildroot}/run/greetd
 
+install -D -m644 -vp %{SOURCE4}       %{buildroot}%{_sysusersdir}/%{name}.conf
+
 %pre
 %service_add_pre %{name}.service
 
@@ -72,6 +75,7 @@ install -d %{buildroot}/run/greetd
 %{_bindir}/%{name}
 %{_bindir}/agreety
 %{_unitdir}/%{name}.service
+%{_sysusersdir}/%{name}.conf
 %dir %{_sysconfdir}/%{name}
 %attr(644,greeter,greeter) %config(noreplace) %{_sysconfdir}/%{name}/config.toml
 %_config_norepl %{_pam_confdir}/greetd
