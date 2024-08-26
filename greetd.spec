@@ -57,18 +57,6 @@ install -d %{buildroot}/run/greetd
 
 install -D -m644 -vp %{SOURCE4}       %{buildroot}%{_sysusersdir}/%{name}.conf
 
-%pre
-%service_add_pre %{name}.service
-
-%post
-%service_add_post %{name}.service
-
-%preun
-%service_del_preun %{name}.service
-
-%postun
-%service_del_postun_without_restart %{name}.service
-
 %files
 %license LICENSE
 %doc README.md
