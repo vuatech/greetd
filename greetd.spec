@@ -15,6 +15,7 @@ Group:          System/Management
 URL:            https://git.sr.ht/~kennylevinsen/greetd
 Source:         https://git.sr.ht/~kennylevinsen/greetd/archive/%{version}/%{name}-%{version}.tar.gz
 Source1:        vendor.tar.xz
+Source2:        cargo_config
 Source3:        greetd.pam
 
 BuildRequires:  cargo
