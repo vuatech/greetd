@@ -8,7 +8,7 @@
 
 Name:           greetd
 Version:        0.10.3
-Release:        1
+Release:        2
 Summary:        Minimal and flexible login manager daemon
 License:        GPL-3.0-only
 Group:          System/Management
