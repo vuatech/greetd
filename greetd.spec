@@ -37,7 +37,7 @@ cargo build --release
 
 install -D -p -m 0755 target/release/%{name} %{buildroot}%{_bindir}/%{name}
 install -D -p -m 0755 target/release/agreety %{buildroot}%{_bindir}/agreety
-
+install -dpm 0755 %{_sysconfdir}/%{name}
 install -D -p -m 0644 config.toml %{buildroot}/%{_sysconfdir}/%{name}/config.toml
 
 install -D -m 0644 %{name}.service %{buildroot}/%{_unitdir}/%{name}.service
