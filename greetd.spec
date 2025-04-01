@@ -1,10 +1,6 @@
-%if 0%{?suse_version} >= 1550
-  %define _pam_confdir %{_pam_vendordir}
-  %define _config_norepl %nil
-%else
-  %define _pam_confdir %{_sysconfdir}/pam.d
-  %define _config_norepl %config(noreplace)
-%endif
+%global debug_package %{nil}
+%define _pam_confdir %{_sysconfdir}/pam.d
+%define _config_norepl %config(noreplace)
 
 Name:           greetd
 Version:        0.10.3
@@ -32,19 +28,16 @@ but instead offloads that to greeters, which are arbitrary applications that imp
 %prep
 %autosetup -a1
 %cargo_prep -v vendor
-#mkdir .cargo
-#cp %{SOURCE2} .cargo/config
+cp %{SOURCE2} .cargo/config
 
 %build
-%cargo_build
+cargo build --release
 
 %install
 
 install -D -p -m 0755 target/release/%{name} %{buildroot}%{_bindir}/%{name}
 install -D -p -m 0755 target/release/agreety %{buildroot}%{_bindir}/agreety
 
-# https://github.com/openSUSE/openSUSEway/issues/37
-sed -i -e "s|\$SHELL|bash|" config.toml
 install -D -p -m 0644 config.toml %{buildroot}/%{_sysconfdir}/%{name}/config.toml
 
 install -D -m 0644 %{name}.service %{buildroot}/%{_unitdir}/%{name}.service
@@ -56,6 +49,12 @@ install -d %{buildroot}%{_sharedstatedir}/greetd
 install -d %{buildroot}/run/greetd
 
 install -D -m644 -vp %{SOURCE4}       %{buildroot}%{_sysusersdir}/%{name}.conf
+
+%post
+%systemd_post %{name}.service
+
+%preun
+%systemd_preun %{name}.service
 
 %files
 %license LICENSE
